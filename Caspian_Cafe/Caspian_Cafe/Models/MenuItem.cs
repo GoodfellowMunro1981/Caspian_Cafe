@@ -11,5 +11,7 @@ namespace Caspian_Cafe.Models
         public decimal Cost { get; set; }
 
         public Temperature Temperature { get; set; }
+
+        public ItemType ItemType { get; set; }
     }
 }

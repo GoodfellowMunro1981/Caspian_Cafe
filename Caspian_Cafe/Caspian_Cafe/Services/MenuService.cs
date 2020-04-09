@@ -19,25 +19,29 @@ namespace Caspian_Cafe.Services
                     {
                         Name = "Cola",
                         Cost = 0.50M,
-                        Temperature = Temperature.Cold
+                        Temperature = Temperature.Cold,
+                        ItemType = ItemType.Drink
                     },
                     new MenuItem
                     {
                         Name = "Coffee",
                         Cost = 1.00M,
-                        Temperature = Temperature.Hot
+                        Temperature = Temperature.Hot,
+                        ItemType = ItemType.Drink
                     },
                     new MenuItem
                     {
                         Name = "Cheese Sandwich",
                         Cost = 2.00M,
-                        Temperature = Temperature.Cold
+                        Temperature = Temperature.Cold,
+                        ItemType = ItemType.Food
                     },
                     new MenuItem
                     {
                         Name = "Steak Sandwich",
                         Cost = 4.50M,
-                        Temperature = Temperature.Hot
+                        Temperature = Temperature.Hot,
+                        ItemType = ItemType.Food
                     }
                 }
             };
@@ -49,6 +53,8 @@ namespace Caspian_Cafe.Services
         {
             var menu = GetMenu();
             var totalCost = 0.0M;
+            var foodIncluded = false;
+            var hotFoodIncluded = false;
 
             foreach (var item in order)
             {
@@ -58,21 +64,65 @@ namespace Caspian_Cafe.Services
                                     .Where(x => x.Name == item)
                                     .FirstOrDefault();
 
-
                     totalCost += menuItem.Cost;
 
+                    if(menuItem.ItemType == ItemType.Food)
+                    {
+                        foodIncluded = true;
+
+                        if(menuItem.Temperature == Temperature.Hot)
+                        {
+                            hotFoodIncluded = true;
+                        }
+                    }
                 }
                 else
                 {
                     var message = string.Format("Order item is not valid '{0}'", item);
-
                     validationResults.AddValidation(ValidationSeverity.Error, message);
                 }
+            }
+
+
+            if(!validationResults.AnyErrorOrInvalid())
+            {
+                if(foodIncluded && !hotFoodIncluded)
+                {
+                    return totalCost + GetFoodServiceCharge(totalCost);
+                }
+                
+                if(hotFoodIncluded)
+                {
+                    return totalCost + GetHotFoodServiceCharge(totalCost);
+                }
+
+                return totalCost;
             }
 
             return validationResults.AnyErrorOrInvalid()
                 ? 0.0M
                 : totalCost;
         }
+
+        #region Private Helpers
+        private static decimal GetFoodServiceCharge(decimal value)
+        {
+            var charge = (value / 100) * 10;
+
+            return charge;
+        }
+
+        private static decimal GetHotFoodServiceCharge(decimal value)
+        {
+            var charge = (value / 100) * 20;
+
+            if(charge <= 20.00M)
+            {
+                return charge;
+            }
+
+            return 20.00M;
+        }
+        #endregion
     }
 }
