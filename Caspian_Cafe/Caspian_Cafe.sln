@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29926.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caspian_Cafe", "Caspian_Cafe\Caspian_Cafe.csproj", "{45F88256-A6E1-4CB8-9653-C1CB9F926778}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caspian_CafeTests", "Caspian_CafeTests\Caspian_CafeTests.csproj", "{05790E07-33E4-4D6D-B407-39F783CE8964}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{45F88256-A6E1-4CB8-9653-C1CB9F926778}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45F88256-A6E1-4CB8-9653-C1CB9F926778}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45F88256-A6E1-4CB8-9653-C1CB9F926778}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45F88256-A6E1-4CB8-9653-C1CB9F926778}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05790E07-33E4-4D6D-B407-39F783CE8964}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05790E07-33E4-4D6D-B407-39F783CE8964}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05790E07-33E4-4D6D-B407-39F783CE8964}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05790E07-33E4-4D6D-B407-39F783CE8964}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6C4B4A3F-D233-47A4-B899-6F6551653CF1}
+	EndGlobalSection
+EndGlobal
