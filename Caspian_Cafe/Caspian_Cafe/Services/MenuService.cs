@@ -83,7 +83,6 @@ namespace Caspian_Cafe.Services
                 }
             }
 
-
             if(!validationResults.AnyErrorOrInvalid())
             {
                 if(foodIncluded && !hotFoodIncluded)
@@ -99,17 +98,14 @@ namespace Caspian_Cafe.Services
                 return totalCost;
             }
 
-            return validationResults.AnyErrorOrInvalid()
-                ? 0.0M
-                : totalCost;
+            return 0.0M;
         }
 
         #region Private Helpers
         private static decimal GetFoodServiceCharge(decimal value)
         {
             var charge = (value / 100) * 10;
-
-            return charge;
+            return Math.Round(charge, 2);
         }
 
         private static decimal GetHotFoodServiceCharge(decimal value)
@@ -118,7 +114,7 @@ namespace Caspian_Cafe.Services
 
             if(charge <= 20.00M)
             {
-                return charge;
+                return Math.Round(charge, 2);
             }
 
             return 20.00M;

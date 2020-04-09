@@ -22,7 +22,7 @@ namespace Caspian_Cafe.Services.Tests
             var result = MenuService.ProcessOrder(order, validationResults);
 
             // Assert
-            Assert.AreEqual(8.00M, result);
+            Assert.AreEqual(9.60M, result);
             Assert.IsFalse(validationResults.AnyErrorOrInvalid());
         }
 
@@ -64,7 +64,7 @@ namespace Caspian_Cafe.Services.Tests
             var result = MenuService.ProcessOrder(order, validationResults);
 
             // Assert
-            Assert.AreEqual(6.50M, result);
+            Assert.AreEqual(7.80M, result);
             Assert.IsFalse(validationResults.AnyErrorOrInvalid());
         }
 
