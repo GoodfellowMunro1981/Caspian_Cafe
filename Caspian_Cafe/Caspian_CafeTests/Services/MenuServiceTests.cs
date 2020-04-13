@@ -190,6 +190,19 @@ namespace Caspian_Cafe.Services.Tests
         }
 
         [TestMethod()]
+        public void GetHotFoodServiceCharge_ValidValue3_Success()
+        {
+            // Arrange
+            var value = 99.99M;
+
+            // Act
+            var result = MenuService.GetHotFoodServiceCharge(value);
+
+            // Assert
+            Assert.AreEqual(20.00M, result);
+        }
+
+        [TestMethod()]
         public void GetHotFoodServiceCharge_ZeroValue_Success()
         {
             // Arrange
@@ -214,6 +227,21 @@ namespace Caspian_Cafe.Services.Tests
             // Assert
             Assert.AreEqual(0.00M, result);
         }
+
+        [TestMethod()]
+        public void GetHotFoodServiceCharge_TestLimitResultValue_Success()
+        {
+            // Arrange
+            var value = 105.00M;
+
+            // Act
+            var result = MenuService.GetHotFoodServiceCharge(value);
+
+            // Assert
+            Assert.AreEqual(20.00M, result);
+        }
+
+
 
         [TestMethod()]
         public void GetTotalWithServiceCharge_ValidValue_ServiceChargeNone_Success()
