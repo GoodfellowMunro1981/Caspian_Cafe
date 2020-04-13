@@ -53,8 +53,7 @@ namespace Caspian_Cafe.Services
         {
             var menu = GetMenu();
             var totalCost = 0.0M;
-            var foodIncluded = false;
-            var hotFoodIncluded = false;
+            var serviceCharge = ServiceCharge.None;
 
             foreach (var item in order)
             {
@@ -66,58 +65,78 @@ namespace Caspian_Cafe.Services
 
                     totalCost += menuItem.Cost;
 
-                    if(menuItem.ItemType == ItemType.Food)
-                    {
-                        foodIncluded = true;
+                    var itemServiceCharge = GetItemServiceCharge(menuItem);
 
-                        if(menuItem.Temperature == Temperature.Hot)
-                        {
-                            hotFoodIncluded = true;
-                        }
+                    if (itemServiceCharge > serviceCharge)
+                    {
+                        serviceCharge = itemServiceCharge;
                     }
                 }
                 else
                 {
-                    var message = string.Format("Order item is not valid '{0}'", item);
-                    validationResults.AddValidation(ValidationSeverity.Error, message);
+                    AddInvalidItemMessage(item, validationResults);
                 }
             }
 
-            if(!validationResults.AnyErrorOrInvalid())
-            {
-                if(foodIncluded && !hotFoodIncluded)
-                {
-                    return totalCost + GetFoodServiceCharge(totalCost);
-                }
-                
-                if(hotFoodIncluded)
-                {
-                    return totalCost + GetHotFoodServiceCharge(totalCost);
-                }
-
-                return totalCost;
-            }
-
-            return 0.0M;
+            return !validationResults.AnyErrorOrInvalid()
+                    ? GetTotalWithServiceCharge(totalCost, serviceCharge)
+                    : 0.0M;
         }
 
-        #region Private Helpers
-        private static decimal GetFoodServiceCharge(decimal value)
+        public static ServiceCharge GetItemServiceCharge(MenuItem menuItem)
+        {
+            if (menuItem.ItemType == ItemType.Food)
+            {
+                if (menuItem.Temperature == Temperature.Hot)
+                {
+                    return ServiceCharge.HotFood;
+                }
+
+                return ServiceCharge.Food;
+            }
+
+            return ServiceCharge.None;
+        }
+
+        public static decimal GetTotalWithServiceCharge(decimal value, ServiceCharge serviceCharge)
+        {
+            return serviceCharge switch
+            {
+                ServiceCharge.Food => value + GetFoodServiceCharge(value),
+                ServiceCharge.HotFood => value + GetHotFoodServiceCharge(value),
+                _ => value,
+            };
+        }
+
+        public static decimal GetFoodServiceCharge(decimal value)
         {
             var charge = (value / 100) * 10;
-            return Math.Round(charge, 2);
+
+            return charge < 0
+                ? 0.00M
+                : Math.Round(charge, 2);
         }
 
-        private static decimal GetHotFoodServiceCharge(decimal value)
+        public static decimal GetHotFoodServiceCharge(decimal value)
         {
             var charge = (value / 100) * 20;
 
-            if(charge <= 20.00M)
+            if (charge >= 0 && charge <= 20.00M)
             {
                 return Math.Round(charge, 2);
             }
 
-            return 20.00M;
+            return charge < 0
+                    ? 0.00M
+                    : 20.00M;
+        }
+
+        #region Private Helpers
+        private static void AddInvalidItemMessage(string item, ValidationResults validationResults)
+
+        {
+            var message = string.Format("Order item is not valid '{0}'", item);
+            validationResults.AddValidation(ValidationSeverity.Error, message);
         }
         #endregion
     }
